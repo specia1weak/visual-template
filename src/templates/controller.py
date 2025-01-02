@@ -27,10 +27,13 @@ class TemplateController:
         template_modes = cfg.get("modes")
         return TemplateModeManger(template_modes, full_screen_capturer, template_monitor_manager)
 
-    def init_dataset(self):
-        pass
+    def init_dataset(self, **kwargs):
+        self.template_mode_manager.update_dataset(kwargs)
 
-    def start(self, operator, interval_seconds=0.5, loops=None):
+    def init_state_pool(self, *args):
+        self.template_mode_manager.update_state_pool(args)
+
+    def start(self, operator, interval_seconds=0.5):
         while not self.pause:
             self.template_mode_manager.match(show_detail=self.show_detect)
             if self.show_history:

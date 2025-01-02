@@ -11,6 +11,7 @@ def run(cfg_path):
         operator_info = operator.get_info()
         full_screen_capturer = ScreenCapturer(0, 0, operator_info["w"], operator_info["h"], hwnd)
         template_controller = TemplateController(cfg_path, full_screen_capturer)
+        template_controller.init_dataset(search_content="原神")
         template_controller.start(operator, interval_seconds=0.5)
 
 
