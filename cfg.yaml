@@ -1,4 +1,4 @@
-modes: ["data/templates_matching/960x600/TapTap/configs/960x600-search.json"]
+modes: ["data/templates_matching/600x960/Test/configs/600x960-test1.json"]
 show_detect : false
 show_history : false
 show_state : false

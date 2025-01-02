@@ -4,9 +4,9 @@ from src.templates.components.comptype import OperationType, DetectorType
 
 
 def configurate():
-    TemplateConfigGenerator("TapTap", search_mumu("MuMu模拟器1"), mode="search").shot_and_config(
+    TemplateConfigGenerator("Test", search_mumu("MuMu模拟器1"), mode="test1").shot_and_config(
         detector   = DetectorType.FIXED_REGION,
-        operations = [OperationType.KEY_TEXT]
+        operations = [OperationType.TAP]
     )
 
 if __name__ == "__main__":

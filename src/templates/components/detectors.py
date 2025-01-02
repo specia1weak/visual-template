@@ -41,14 +41,18 @@ class TemplateDetector(ABC):
     def detect(self, full_screen_shot, show_detail) -> Tuple[bool, Union[None, dict]]:
         pass
 
+
 def _print_similarity(template_name, similarity, threshold, detect_succeed):
-    print(f"[{template_name}]: [{similarity: 2.f}/{threshold: 2.f}]. Detect: {detect_succeed}")
+    print(f"检测: [{template_name}]: [{similarity: .2f}/{threshold: .2f}]. Detect: {detect_succeed}")
+
 
 def _print_max_similarity_and_match_count(template_name, similarity_matrix, threshold, detect_count):
-    print(f"[{template_name}]: [{np.max(similarity_matrix): 2.f}/{threshold: 2.f}]. Detect Count: {detect_count}")
+    print(f"检测: [{template_name}]: [{np.max(similarity_matrix): .2f}/{threshold: .2f}]. Detect Count: {detect_count}")
+
 
 def _print_no_detect(template_name):
-    print(f"[{template_name}无需检测]. Detect: True")
+    print(f"检测: [{template_name}无需检测]. Detect: True")
+
 
 class FixedRegionDetector(TemplateDetector):
     @classmethod
@@ -99,9 +103,10 @@ class RegionExistsDetector(TemplateDetector):
     def generate(cls, cropper: ScreenShotCropper):
         print("被匹配模板")
         box_info = cropper.crop_box()
-        if box_info is None: # 这个boxinfo没用，主要是他的截图需要保存下来
+        if box_info is None:  # 这个boxinfo没用，主要是他的截图需要保存下来
             return
         (template_x1, template_y1, template_x2, template_y2), template_img = box_info
+
         # 其他信息的读取
         class RegionExistConfigUI(ConfigUI):
             def create_widgets(self):
@@ -116,7 +121,7 @@ class RegionExistsDetector(TemplateDetector):
         kwargs = config_ui.query_config(check_valid=lambda d: d["template_name"])
         kwargs["threshold"] = float(kwargs["threshold"])
         template_name = kwargs.get("template_name")
-        cropper.save(template_name) # 保存
+        cropper.save(template_name)  # 保存
 
         dx, dy = 0, 0
         boxes_data_key = kwargs.get("boxes_data_key")
@@ -160,8 +165,9 @@ class RegionExistsDetector(TemplateDetector):
 
     def detect(self, full_screen_shot, show_detail) -> Tuple[bool, Union[None, dict]]:
         background_region_image = full_screen_shot[self.y1: self.y1 + self.h, self.x1: self.x1 + self.w, ...]
-        self.xyxy_boxes, similarity_matrix = search_template(self.template_image, background_region_image, self.match_method,
-                                          self.threshold)
+        self.xyxy_boxes, similarity_matrix = search_template(self.template_image, background_region_image,
+                                                             self.match_method,
+                                                             self.threshold)
         ## xyxy_boxes 还要用 x1, y1矫正, 以及dx, dy
         self.xyxy_boxes = [(x1 + self.x1 + self.dx, y1 + self.y1 + self.dy,
                             x2 + self.x1 + self.dx, y2 + self.y1 + self.dy) for x1, y1, x2, y2 in self.xyxy_boxes]
@@ -172,18 +178,21 @@ class RegionExistsDetector(TemplateDetector):
             }
         detect_succeed = len(self.xyxy_boxes) > 0
         if show_detail:
-            _print_max_similarity_and_match_count(self.template_name, similarity_matrix, self.threshold, len(self.xyxy_boxes) > 0)
+            _print_max_similarity_and_match_count(self.template_name, similarity_matrix, self.threshold,
+                                                  len(self.xyxy_boxes) > 0)
         return detect_succeed, boxes_info
+
 
 class BinaryRegionExistsDetector(TemplateDetector):
     @classmethod
     def generate(cls, cropper: ScreenShotCropper):
         print("被匹配模板")
         box_info = cropper.crop_box()
-        if box_info is None: # 这个boxinfo没用，主要是他的截图需要保存下来
+        if box_info is None:  # 这个boxinfo没用，主要是他的截图需要保存下来
             return
         (template_x1, template_y1, template_x2, template_y2), template_img = box_info
         _, bg_color, words_color = binary_bg_and_words_colors(template_img)
+
         # 其他信息的读取
         class RegionExistConfigUI(ConfigUI):
             def create_widgets(self):
@@ -198,7 +207,7 @@ class BinaryRegionExistsDetector(TemplateDetector):
         kwargs = config_ui.query_config(check_valid=lambda d: d["template_name"])
         kwargs["threshold"] = float(kwargs["threshold"])
         template_name = kwargs.get("template_name")
-        cropper.save(template_name) # 保存
+        cropper.save(template_name)  # 保存
 
         dx, dy = 0, 0
         boxes_data_key = kwargs.get("boxes_data_key")
@@ -259,8 +268,10 @@ class BinaryRegionExistsDetector(TemplateDetector):
             }
         detect_succeed = len(self.xyxy_boxes) > 0
         if show_detail:
-            _print_max_similarity_and_match_count(self.template_name, similarity_matrix, self.threshold, len(self.xyxy_boxes) > 0)
+            _print_max_similarity_and_match_count(self.template_name, similarity_matrix, self.threshold,
+                                                  len(self.xyxy_boxes) > 0)
         return detect_succeed, boxes_info
+
 
 class WithoutImageDetector(TemplateDetector):
     @classmethod

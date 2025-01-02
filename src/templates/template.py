@@ -185,7 +185,10 @@ class TemplateModeManger:
             # 优先级校验
             matched_templates_all_modes.sort(key=lambda x: x.common_info.priority)
             if show_detail:
-                map(lambda x: print(f"{x.template_name}: {x.common_info.priority}"), matched_templates_all_modes)
+                print("优先级: ", end="")
+                for matched_template in matched_templates_all_modes:
+                    print(f"{matched_template.template_name}: {matched_template.common_info.priority}", end=",")
+                print()
             self.matched_template = matched_templates_all_modes[0]
         return self.matched_template
 
@@ -193,13 +196,12 @@ class TemplateModeManger:
         if self.matched_template is None:
             self.no_detect()
         else:
-            print("执行", self.matched_template.template_name)
+            print("执行: ", self.matched_template.template_name)
             self.matched_template.operate(absolute_operator, self.dataset, interval_seconds)
             self.matched_template.update_state_pool(self.state_pool)
             self.matched_template_recoder.update_record(self.matched_template.template_name)
         if self.monitor_manager is not None:
             self.monitor_manager.monitor(self.matched_template_recoder, self.state_pool)
-        print("历史：", self.matched_template_recoder)
 
     def activate_mode(self, mode_name):
         mode = self.template_modes.get(mode_name, None)

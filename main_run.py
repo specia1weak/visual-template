@@ -10,8 +10,11 @@ def run(cfg_path):
     with SafeDecorator(AutoMumuOperator(DEFAULT_MUMU_DEVICE_ID, hwnd)) as operator:
         operator_info = operator.get_info()
         full_screen_capturer = ScreenCapturer(0, 0, operator_info["w"], operator_info["h"], hwnd)
-        template_controller = TemplateController(cfg_path, full_screen_capturer)
-        template_controller.init_dataset(search_content="原神")
+        template_controller = TemplateController(cfg_path, full_screen_capturer,
+                                                 show_state=True, show_detect=True, show_history=True)
+        template_controller.init_dataset(search_content="原神") # 如果你的key-text需要参数在这里可以加入
+        template_controller.bind_hotkey_to_switch_working("ctrl+1")
+        template_controller.bind_hotkey_to_exit_working("ctrl+2")
         template_controller.start(operator, interval_seconds=0.5)
 
 
