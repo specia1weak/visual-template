@@ -15,21 +15,21 @@ class TemplateController:
     """
 
     def __init__(self, ctrl_cfg_path, full_screen_capturer, template_monitor_manager=None,
-                 show_detect=False, show_history=False, show_state=False):
-        self.template_mode_manager: TemplateModeManger = \
-            self._init_mode_manager(ctrl_cfg_path, full_screen_capturer, template_monitor_manager)
-        self.show_detect = show_detect
-        self.show_history = show_history
-        self.show_state = show_state
+                 show_detect: Union[bool, None] = None,
+                 show_history: Union[bool, None] = None,
+                 show_state: Union[bool, None] = None):
+        with open(ctrl_cfg_path, "r", encoding="utf8") as f:
+            self.cfg = yaml.safe_load(f)
+        self.template_mode_manager = TemplateModeManger(self.cfg.get("modes"), full_screen_capturer, template_monitor_manager)
+
+        # init_args > cfg_args
+        self.show_detect = show_detect if show_detect is not None else self.cfg.get("show_detect", None)
+        self.show_history = show_history if show_history is not None else self.cfg.get("show_history", None)
+        self.show_state = show_state if show_state is not None else self.cfg.get("show_state", None)
 
         self.pause = False
         self.exit_work = False
 
-    def _init_mode_manager(self, cfg_path, full_screen_capturer, template_monitor_manager):
-        with open(cfg_path, "r", encoding="utf8") as f:
-            cfg = yaml.safe_load(f)
-        template_modes = cfg.get("modes")
-        return TemplateModeManger(template_modes, full_screen_capturer, template_monitor_manager)
 
     def _switch_working(self):
         self.pause = not self.pause
