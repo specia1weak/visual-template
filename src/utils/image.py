@@ -279,6 +279,7 @@ class ImageDrawer:
             img = draw_item.draw(img)
         return img
 
+
 def simple_binarize_image(img, threshold=127):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     _, binary = cv2.threshold(gray, threshold, 255, cv2.THRESH_BINARY)
@@ -293,5 +294,3 @@ if __name__ == "__main__":
     cv2.imshow("1", new_img)
     cv2.waitKey()
     # image_expander.save_config("./abc.yaml")
-
-

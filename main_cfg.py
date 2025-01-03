@@ -3,13 +3,13 @@ from src.templates.generate import TemplateConfigGenerator
 from src.templates.components.comptype import OperationType, DetectorType
 import keyboard
 
-def configurate():
+def configurate(detector, operations):
     template_config_generator = TemplateConfigGenerator("Test", search_mumu("MuMu模拟器1"), mode="test1")
     def call_a_config():
         try:
             template_config_generator.shot_and_config(
-                detector   = DetectorType.FIXED_REGION,
-                operations = [OperationType.TAP]
+                detector   = detector,
+                operations = operations
             )
         except Exception:
             print("本次配置失败")
@@ -19,4 +19,8 @@ def configurate():
     keyboard.wait("ctrl+alt+2")
 
 if __name__ == "__main__":
-    configurate()
+    detector = DetectorType.EXIST_REGION
+    operations = []
+    operations.append(OperationType.KEY_TAP)
+    # operations.append(OperationType.
+    configurate(detector, operations)

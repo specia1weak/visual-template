@@ -1,4 +1,4 @@
-modes: ["data/templates_matching/600x960/Test/configs/600x960-test1.json"]
+modes: ["data/templates_matching/960x600/BanGDream/configs/960x600-search_EXIST.json"]
 show_detect : false
 show_history : false
 show_state : false

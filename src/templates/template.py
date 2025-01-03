@@ -41,9 +41,9 @@ class Template:
             dataset.update(detect_data_dict)
         return detect_exist
 
-    def operate(self, operator, dataset, interval_seconds):
+    def operate(self, operator, capturer, dataset, interval_seconds):
         for operation in self.operations:
-            operation.execute(operator, dataset)
+            operation.execute(operator, capturer, dataset)
             time.sleep(interval_seconds)
 
     def update_state_pool(self, state_pool):
@@ -152,14 +152,14 @@ class TemplateModeManger:
         self._initialize_dataset()
 
     def _initialize_dataset(self):
-        self.dataset["screen_capturer"] = self.screen_capturer
+        pass
 
     def _prepare_dataset(self):
         full_screen_img = self.screen_capturer.capture()
         self.dataset["full_screen_shot"] = full_screen_img
 
     def update_dataset(self, data):
-        self.state_pool.update(data)
+        self.dataset.update(data)
 
     def update_state_pool(self, state_set):
         self.state_pool.update(state_set)
@@ -197,7 +197,7 @@ class TemplateModeManger:
             self.no_detect()
         else:
             print("执行: ", self.matched_template.template_name)
-            self.matched_template.operate(absolute_operator, self.dataset, interval_seconds)
+            self.matched_template.operate(absolute_operator, self.screen_capturer, self.dataset, interval_seconds)
             self.matched_template.update_state_pool(self.state_pool)
             self.matched_template_recoder.update_record(self.matched_template.template_name)
         if self.monitor_manager is not None:

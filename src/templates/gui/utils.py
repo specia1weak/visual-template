@@ -101,7 +101,6 @@ class ScreenShotCropper:
             img2 = shot_obj.img.copy()
             if event == cv2.EVENT_LBUTTONDOWN:  # 左键点击
                 shot_obj.p1 = (x, y)
-                print(x, y)
                 cv2.circle(img2, shot_obj.p1, 5, (0, 255, 0), 5)
                 cv2.imshow(shot_obj.BOX_IMG_WINDOW, img2)
             elif event == cv2.EVENT_MOUSEMOVE and flags:  # 按住左键拖曳
@@ -109,7 +108,6 @@ class ScreenShotCropper:
                 cv2.imshow(shot_obj.BOX_IMG_WINDOW, img2)
             elif event == cv2.EVENT_LBUTTONUP:  # 左键释放
                 shot_obj.p2 = (x, y)
-                print(x, y)
                 cv2.rectangle(img2, shot_obj.p1, shot_obj.p2, (0, 0, 255), 1)
                 cv2.imshow(shot_obj.BOX_IMG_WINDOW, img2)
                 min_x = min(shot_obj.p1[0], shot_obj.p2[0])
@@ -134,7 +132,6 @@ class ScreenShotCropper:
             img2 = shot_obj.img.copy()
             if event == cv2.EVENT_LBUTTONDOWN:  # 左键点击
                 shot_obj.p1 = (x, y)
-                print(x, y)
                 cv2.circle(img2, shot_obj.p1, 5, (0, 255, 0), 3)
                 cv2.imshow(shot_obj.BOX_IMG_WINDOW, img2)
             elif event == cv2.EVENT_MOUSEMOVE and flags:  # 按住左键拖曳
@@ -143,7 +140,6 @@ class ScreenShotCropper:
                 cv2.imshow(shot_obj.BOX_IMG_WINDOW, img2)
             elif event == cv2.EVENT_LBUTTONUP:  # 左键释放
                 shot_obj.p2 = (x, y)
-                print(x, y)
                 cv2.circle(img2, shot_obj.p1, 5, (0, 255, 0), 3)
                 cv2.arrowedLine(img2, shot_obj.p1, shot_obj.p2, (0, 0, 255), 2, tipLength=0.05)
                 cv2.circle(img2, shot_obj.p2, 5, (0, 0, 255), 3)

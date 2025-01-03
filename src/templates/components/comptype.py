@@ -14,6 +14,7 @@ class OperationType(Enum):
     KEY_TAP = operations.BoxesDataKeyTapOperation
     SLEEP = operations.SleepOperation
     KEY_NUMBER = operations.RecognizeNumberOperation
+    NAME_DRAG_TILL = operations.RepeatDragTillRegionExists
 
 
 class DetectorType(Enum):
